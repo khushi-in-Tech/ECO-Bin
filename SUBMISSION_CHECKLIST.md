@@ -49,11 +49,11 @@ EcoBin – Smart E-Waste Recycling Platform
 
 **GitHub Repository Link:**
 ```
-https://github.com/biharkhushisingh-lab/ECO-Bin
+https://github.com/khushi-in-Tech/ECO-Bin
 ```
 
 ```
-https://biharkhushisingh-lab.github.io/ECO-Bin/
+https://khushi-in-Tech.github.io/ECO-Bin/
 ```
 
 **Demo Video Link:**
@@ -86,7 +86,7 @@ cd "c:\Users\Khushi Singh\Downloads\IITBHU"
 git init
 git add .
 git commit -m "EcoBin - Smart E-Waste Recycling Platform"
-git remote add origin https://github.com/biharkhushisingh-lab/ECO-Bin.git
+git remote add origin https://github.com/khushi-in-Tech/ECO-Bin.git
 git branch -M main
 git push -u origin main
 ```
