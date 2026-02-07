@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoBin – Smart E-Waste Recycling</title>
+    <!-- v2.0 - Enhanced with History & Gamification -->
+
+    <!-- Leaflet.js for Interactive Maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- Google Translate Widget -->
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                autoDisplay: false
+            }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript"
+        src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Floating Home Button (shows on all screens except landing/home) -->
+    <button class="floating-home-btn" id="floating-home-btn" onclick="navigateTo('landing')" style="display: none;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+            <polyline points="9 22 9 12 15 12 15 22" />
+        </svg>
+        <span>Home</span>
+    </button>
+
+    <!-- Screen 0: Landing/Login Screen -->
+    <div class="screen active" id="landing-screen">
+        <div class="landing-container">
+            <!-- Back to App Button (only shows if user came from home) -->
+            <button class="btn-back-to-app" id="back-to-app-btn" onclick="navigateTo('home')" style="display: none;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7" />
+                </svg>
+                <span>Back to App</span>
+            </button>
+
+            <!-- Logo & Branding -->
+            <div class="landing-logo">
+                <div class="logo-icon-large">
+                    <svg viewBox="0 0 120 120" class="logo-svg-large">
+                        <defs>
+                            <linearGradient id="binGradientLanding" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" style="stop-color:#7BC9A5;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#5FB87C;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <circle cx="60" cy="60" r="50" fill="url(#binGradientLanding)" opacity="0.2"
+                            class="logo-pulse" />
+                        <path d="M 45 50 L 40 85 L 80 85 L 75 50 Z" fill="url(#binGradientLanding)" stroke="#4A9D6B"
+                            stroke-width="2" />
+                        <ellipse cx="60" cy="50" rx="15" ry="4" fill="#7BC9A5" />
+                        <path d="M 55 62 L 60 72 L 65 62 L 63 62 L 63 57 L 57 57 L 57 62 Z" fill="#fff" opacity="0.9" />
+                        <path d="M 52 67 L 55 70 L 60 63" stroke="#fff" stroke-width="2" fill="none"
+                            stroke-linecap="round" />
+                    </svg>
+                </div>
+                <h1 class="landing-title">EcoBin</h1>
+                <p class="landing-tagline">Recycle smarter, grow a greener world</p>
+            </div>
+
+            <!-- Login Options -->
+            <div class="login-options">
+                <h2 class="login-heading">Welcome! How would you like to continue?</h2>
+
+                <button class="login-option user-option" onclick="navigateTo('home')">
+                    <div class="option-icon">🌱</div>
+                    <div class="option-content">
+                        <h3>I want to recycle</h3>
+                        <p>Find centers, earn rewards, track impact</p>
+                    </div>
+                    <svg class="option-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                </button>
+
+                <button class="login-option center-option"
+                    onclick="alert('Recycling Center dashboard coming soon! 🏢')">
+                    <div class="option-icon">🏢</div>
+                    <div class="option-content">
+                        <h3>Recycling Center</h3>
+                        <p>Manage collections, track inventory</p>
+                    </div>
+                    <svg class="option-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Sign Up Link -->
+            <div class="signup-link">
+                <p>New user? <a href="#" onclick="navigateTo('signup'); return false;">Sign up for free!</a></p>
+            </div>
+
+            <!-- Footer -->
+            <div class="landing-footer">
+                <p>🌍 Join 10,000+ eco-warriors making a difference</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signup Screen -->
+    <div class="screen" id="signup-screen">
+        <div class="signup-container">
+            <button class="btn-back-signup" onclick="navigateTo('landing')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7" />
+                </svg>
+            </button>
+
+            <div class="signup-content">
+                <div class="signup-logo">
+                    <div class="logo-icon-signup">🌱</div>
+                    <h2>Create Account</h2>
+                    <p>Join EcoBin and start recycling smarter!</p>
+                </div>
+
+                <form class="signup-form" onsubmit="handleSignup(event)">
+                    <div class="form-group">
+                        <label for="mobile">Mobile Number</label>
+                        <div class="input-wrapper">
+                            <span class="input-prefix">+91</span>
+                            <input type="tel" id="mobile" placeholder="98765 43210" pattern="[0-9]{10}" required
+                                maxlength="10" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Set Password</label>
+                        <input type="password" id="password" placeholder="Minimum 6 characters" required
+                            minlength="6" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirm-password">Confirm Password</label>
+                        <input type="password" id="confirm-password" placeholder="Re-enter password" required
+                            minlength="6" />
+                    </div>
+
+                    <button type="submit" class="btn-signup">
+                        Create Account 🚀
+                    </button>
+                </form>
+
+                <div class="signup-footer-text">
+                    <p>Already have an account? <a href="#" onclick="navigateTo('landing'); return false;">Sign in</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 1: Home Screen -->
+    <div class="screen" id="home-screen">
+        <div class="container">
+            <div class="logo-section">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 120 120" class="logo-svg">
+                        <!-- Gradient Definitions -->
+                        <defs>
+                            <linearGradient id="binGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" style="stop-color:#7BC9A5;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#5FB87C;stop-opacity:1" />
+                            </linearGradient>
+                            <linearGradient id="leafGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#A8E6CF;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#7BC9A5;stop-opacity:1" />
+                            </linearGradient>
+                            <radialGradient id="glowGradient" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" style="stop-color:#FFD700;stop-opacity:0.8" />
+                                <stop offset="100%" style="stop-color:#FFD700;stop-opacity:0" />
+                            </radialGradient>
+                        </defs>
+
+                        <!-- Outer glow circle -->
+                        <circle cx="60" cy="60" r="50" fill="url(#glowGradient)" opacity="0.3" class="logo-pulse" />
+
+                        <!-- Recycling bin body -->
+                        <path d="M 45 50 L 40 85 L 80 85 L 75 50 Z" fill="url(#binGradient)" stroke="#4A9D6B"
+                            stroke-width="2" />
+                        <ellipse cx="60" cy="50" rx="15" ry="4" fill="#7BC9A5" />
+
+                        <!-- Recycling symbol on bin -->
+                        <g transform="translate(60, 67)">
+                            <path d="M 0 -8 L -3 -3 L 3 -3 Z" fill="#fff" opacity="0.9" />
+                            <path d="M 5 0 L 7 6 L 1 6 Z" fill="#fff" opacity="0.9" transform="rotate(120 4 4)" />
+                            <path d="M -5 0 L -7 6 L -1 6 Z" fill="#fff" opacity="0.9" transform="rotate(240 -4 4)" />
+                            <circle r="3" fill="#fff" opacity="0.9" />
+                        </g>
+
+                        <!-- Leaves sprouting from bin -->
+                        <ellipse cx="40" cy="42" rx="8" ry="12" fill="url(#leafGradient)" transform="rotate(-30 40 42)"
+                            class="leaf-float-1" />
+                        <ellipse cx="80" cy="42" rx="8" ry="12" fill="url(#leafGradient)" transform="rotate(30 80 42)"
+                            class="leaf-float-2" />
+                        <ellipse cx="60" cy="35" rx="10" ry="14" fill="url(#leafGradient)" class="leaf-float-3" />
+
+                        <!-- Sparkles -->
+                        <g class="sparkle-rotate">
+                            <path d="M 25 30 L 26 33 L 25 36 L 24 33 Z" fill="#FFD700" opacity="0.8" />
+                            <path d="M 22 33 L 25 33 L 22 34 Z" fill="#FFD700" opacity="0.8" />
+                        </g>
+                        <g class="sparkle-rotate" style="animation-delay: 0.5s">
+                            <path d="M 95 35 L 96 38 L 95 41 L 94 38 Z" fill="#FFB84D" opacity="0.8" />
+                            <path d="M 92 38 L 95 38 L 92 39 Z" fill="#FFB84D" opacity="0.8" />
+                        </g>
+                        <g class="sparkle-rotate" style="animation-delay: 1s">
+                            <path d="M 60 15 L 61 18 L 60 21 L 59 18 Z" fill="#A8E6CF" opacity="0.9" />
+                            <path d="M 57 18 L 60 18 L 57 19 Z" fill="#A8E6CF" opacity="0.9" />
+                        </g>
+                    </svg>
+                </div>
+                <h1 class="app-title">EcoBin</h1>
+                <p class="tagline">Recycle smarter, grow a greener world</p>
+
+                <!-- Logout/Switch Account Button -->
+                <button class="btn-logout" onclick="navigateTo('landing')" title="Switch Account">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                        <polyline points="16 17 21 12 16 7" />
+                        <line x1="21" y1="12" x2="9" y2="12" />
+                    </svg>
+                    <span>Logout</span>
+                </button>
+            </div>
+
+            <div class="cta-section">
+                <button class="btn-primary pulse" onclick="navigateTo('waste-selection')">
+                    <span>Start Recycling</span>
+                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                </button>
+                <button class="btn-secondary" onclick="navigateTo('history')">
+                    <svg class="btn-icon-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>View History</span>
+                </button>
+                <p class="sub-text">Join 10,000+ eco-warriors making a difference</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 2: Waste Selection Screen -->
+    <div class="screen" id="waste-selection-screen">
+        <div class="container">
+            <div class="header screen-header">
+                <button class="btn-back btn-back-header" onclick="goBack()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M19 12H5M12 19l-7-7 7-7" />
+                    </svg>
+                </button>
+                <h2>What are you recycling?</h2>
+            </div>
+
+            <div class="waste-grid">
+                <div class="waste-card" onclick="selectWaste('phone')">
+                    <div class="waste-icon">
+                        <svg viewBox="0 0 80 80">
+                            <rect x="20" y="10" width="40" height="60" rx="5" fill="#FFE0B5" stroke="#FFB84D"
+                                stroke-width="2" />
+                            <rect x="25" y="15" width="30" height="45" rx="2" fill="#FFF8E8" />
+                            <circle cx="40" cy="65" r="3" fill="#FFB84D" />
+                        </svg>
+                    </div>
+                    <h3>Phone</h3>
+                    <p>Smartphones & tablets</p>
+                </div>
+
+                <div class="waste-card" onclick="selectWaste('battery')">
+                    <div class="waste-icon">
+                        <svg viewBox="0 0 80 80">
+                            <rect x="25" y="25" width="30" height="40" rx="3" fill="#B8E6D0" stroke="#5FB87C"
+                                stroke-width="2" />
+                            <rect x="35" y="20" width="10" height="5" rx="1" fill="#5FB87C" />
+                            <rect x="30" y="35" width="20" height="8" rx="1" fill="#5FB87C" opacity="0.4" />
+                            <rect x="30" y="46" width="20" height="8" rx="1" fill="#5FB87C" opacity="0.6" />
+                        </svg>
+                    </div>
+                    <h3>Battery</h3>
+                    <p>All types of batteries</p>
+                </div>
+
+                <div class="waste-card" onclick="selectWaste('laptop')">
+                    <div class="waste-icon">
+                        <svg viewBox="0 0 80 80">
+                            <rect x="15" y="25" width="50" height="35" rx="3" fill="#E8D5F2" stroke="#B085D4"
+                                stroke-width="2" />
+                            <rect x="20" y="30" width="40" height="25" rx="1" fill="#F5EDFA" />
+                            <rect x="10" y="60" width="60" height="5" rx="2" fill="#B085D4" />
+                        </svg>
+                    </div>
+                    <h3>Laptop</h3>
+                    <p>Computers & monitors</p>
+                </div>
+
+                <div class="waste-card" onclick="selectWaste('charger')">
+                    <div class="waste-icon">
+                        <svg viewBox="0 0 80 80">
+                            <rect x="25" y="20" width="30" height="35" rx="4" fill="#FFD5D5" stroke="#FF9999"
+                                stroke-width="2" />
+                            <rect x="30" y="25" width="20" height="15" rx="2" fill="#FFF0F0" />
+                            <line x1="35" y1="60" x2="35" y2="70" stroke="#FF9999" stroke-width="3"
+                                stroke-linecap="round" />
+                            <line x1="45" y1="60" x2="45" y2="70" stroke="#FF9999" stroke-width="3"
+                                stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <h3>Charger</h3>
+                    <p>Cables & adapters</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 3: Map Screen -->
+    <div class="screen" id="map-screen">
+        <div class="container">
+            <div class="header section-header">
+                <button class="btn-back btn-back-header" onclick="goBack()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M19 12H5M12 19l-7-7 7-7" />
+                    </svg>
+                </button>
+                <h2>Nearby EcoBins</h2>
+            </div>
+
+            <div class="map-container">
+                <!-- Live Interactive Map -->
+                <div id="live-map" style="width: 100%; height: 400px; border-radius: 16px; overflow: hidden;"></div>
+
+                <!-- Location Status -->
+                <div class="location-status" id="location-status">
+                    <svg class="status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                        <circle cx="12" cy="10" r="3" />
+                    </svg>
+                    <span id="location-text">Getting your location...</span>
+                </div>
+            </div>
+
+            <!-- Location Status -->
+            <div class="location-found-message" id="location-found">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                    <circle cx="12" cy="10" r="3" />
+                </svg>
+                <span>Location found: <strong id="real-time-location">BHU, Varanasi, Uttar Pradesh</strong></span>
+            </div>
+
+            <!-- Show Nearby Centers Button -->
+            <button class="show-centers-btn" id="show-centers-btn" onclick="toggleAllCenters()">
+                <span>📍 Show Nearby Centers</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M6 9l6 6 6-6" />
+                </svg>
+            </button>
+
+            <!-- All Centers List (Initially Hidden) -->
+            <div class="all-centers-container" id="all-centers-container">
+                <!-- Nearest Center -->
+                <div class="center-list-section">
+                    <h3 class="list-section-title">Nearest</h3>
+                    <div class="center-card nearest" onclick="toggleCenterDetails('nearest')">
+                        <div class="center-card-header">
+                            <div class="center-icon">🏢</div>
+                            <div class="center-main-info">
+                                <h4>EcoBin Station #42</h4>
+                                <p class="center-distance">📍 0.3 km • Green Valley Mall</p>
+                            </div>
+                            <svg class="expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M6 9l6 6 6-6" />
+                            </svg>
+                        </div>
+
+                        <div class="center-details" id="nearest-details">
+                            <div class="detail-row">
+                                <span class="detail-label">📞 Contact:</span>
+                                <span class="detail-value">+91 98765 43210</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">⏰ Hours:</span>
+                                <span class="detail-value">Mon-Sun: 9 AM - 8 PM</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">📧 Email:</span>
+                                <span class="detail-value">station42@ecobin.com</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">💼 Capacity:</span>
+                                <span class="detail-value">
+                                    <span class="capacity-good">73% Available</span>
+                                </span>
+                            </div>
+                            <button class="btn-navigate"
+                                onclick="event.stopPropagation(); window.open('https://www.google.com/maps/dir/?api=1&destination=25.2677,82.9913', '_blank')">
+                                🧭 Get Directions
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Other Centers (Farthest) -->
+                <div class="center-list-section">
+                    <h3 class="list-section-title">Farthest</h3>
+
+                    <div class="center-card" onclick="toggleCenterDetails('center2')">
+                        <div class="center-card-header">
+                            <div class="center-icon">🏢</div>
+                            <div class="center-main-info">
+                                <h4>EcoBin Station #15</h4>
+                                <p class="center-distance">📍 1.2 km • Lanka Market</p>
+                            </div>
+                            <svg class="expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M6 9l6 6 6-6" />
+                            </svg>
+                        </div>
+
+                        <div class="center-details" id="center2-details">
+                            <div class="detail-row">
+                                <span class="detail-label">📞 Contact:</span>
+                                <span class="detail-value">+91 98765 43211</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">⏰ Hours:</span>
+                                <span class="detail-value">Mon-Sat: 10 AM - 7 PM</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">📧 Email:</span>
+                                <span class="detail-value">station15@ecobin.com</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">💼 Capacity:</span>
+                                <span class="detail-value">
+                                    <span class="capacity-medium">45% Available</span>
+                                </span>
+                            </div>
+                            <button class="btn-navigate"
+                                onclick="event.stopPropagation(); window.open('https://www.google.com/maps/dir/?api=1&destination=25.2685,82.9920', '_blank')">
+                                🧭 Get Directions
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="center-card" onclick="toggleCenterDetails('center3')">
+                        <div class="center-card-header">
+                            <div class="center-icon">🏢</div>
+                            <div class="center-main-info">
+                                <h4>EcoBin Station #28</h4>
+                                <p class="center-distance">📍 2.1 km • Bhelpur</p>
+                            </div>
+                            <svg class="expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M6 9l6 6 6-6" />
+                            </svg>
+                        </div>
+
+                        <div class="center-details" id="center3-details">
+                            <div class="detail-row">
+                                <span class="detail-label">📞 Contact:</span>
+                                <span class="detail-value">+91 98765 43212</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">⏰ Hours:</span>
+                                <span class="detail-value">Mon-Sun: 8 AM - 9 PM</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">📧 Email:</span>
+                                <span class="detail-value">station28@ecobin.com</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">💼 Capacity:</span>
+                                <span class="detail-value">
+                                    <span class="capacity-low">18% Available</span>
+                                </span>
+                            </div>
+                            <button class="btn-navigate"
+                                onclick="event.stopPropagation(); window.open('https://www.google.com/maps/dir/?api=1&destination=25.2620,82.9965', '_blank')">
+                                🧭 Get Directions
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="map-actions">
+            <button class="btn-primary" onclick="navigateTo('scanning')">
+                <svg class="btn-icon-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+                    <circle cx="12" cy="13" r="4" />
+                </svg>
+                <span>📱 Scan Item</span>
+            </button>
+        </div>
+    </div>
+    </div>
+
+    <!-- Screen 4: Scanning Screen -->
+    <div class="screen" id="scanning-screen">
+        <div class="container">
+            <div class="header screen-header">
+                <button class="btn-back btn-back-header" onclick="goBack()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M19 12H5M12 19l-7-7 7-7" />
+                    </svg>
+                </button>
+                <h2>Scan Your Item</h2>
+            </div>
+
+            <div class="scan-area">
+                <div class="scan-frame">
+                    <div class="scan-corner tl"></div>
+                    <div class="scan-corner tr"></div>
+                    <div class="scan-corner bl"></div>
+                    <div class="scan-corner br"></div>
+                    <div class="scan-line"></div>
+
+                    <div class="scan-content" id="scan-content">
+                        <svg viewBox="0 0 200 200" class="scan-icon">
+                            <circle cx="100" cy="100" r="60" fill="none" stroke="#A8E6CF" stroke-width="3"
+                                stroke-dasharray="5,5" class="rotate-animation" />
+                            <path d="M 70 100 L 85 115 L 130 70" stroke="#5FB87C" stroke-width="6" fill="none"
+                                stroke-linecap="round" stroke-linejoin="round" opacity="0" class="check-animation" />
+                        </svg>
+                        <p class="scan-text">Position your item in the frame</p>
+                    </div>
+                </div>
+
+                <div class="upload-option">
+                    <input type="file" id="file-upload" accept="image/*" onchange="handleFileUpload(event)"
+                        style="display: none;">
+                    <button class="btn-upload" onclick="document.getElementById('file-upload').click()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" />
+                        </svg>
+                        Upload Photo
+                    </button>
+                    <button class="btn-simulate" onclick="simulateScan()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="5 3 19 12 5 21 5 3" />
+                        </svg>
+                        Simulate Scan
+                    </button>
+                </div>
+            </div>
+
+            <div class="scanning-tips">
+                <h4>📸 Tips for best results:</h4>
+                <ul>
+                    <li>Ensure good lighting</li>
+                    <li>Keep the item centered</li>
+                    <li>Avoid shadows and glare</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 5: Result + Nature Reaction Screen -->
+    <div class="screen" id="result-screen">
+        <div class="container">
+            <div class="header screen-header">
+                <button class="btn-back btn-back-header" onclick="goBack()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M19 12H5M12 19l-7-7 7-7" />
+                    </svg>
+                </button>
+                <h2>Scan Results</h2>
+            </div>
+            <div class="result-content">
+                <!-- Step 1: Detection Result -->
+                <div class="result-step active" id="detection-result">
+                    <div class="result-header">
+                        <div class="success-badge">
+                            <svg viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="11" fill="#5FB87C" />
+                                <path d="M 7 12 L 10 15 L 17 8" stroke="#fff" stroke-width="2" fill="none"
+                                    stroke-linecap="round" />
+                            </svg>
+                            <span>Detected!</span>
+                        </div>
+                    </div>
+
+                    <div class="detected-item">
+                        <div class="item-image">
+                            <svg viewBox="0 0 120 120">
+                                <rect x="30" y="15" width="60" height="90" rx="8" fill="#FFE0B5" stroke="#FFB84D"
+                                    stroke-width="3" />
+                                <rect x="37" y="22" width="46" height="70" rx="3" fill="#FFF8E8" />
+                                <circle cx="60" cy="100" r="5" fill="#FFB84D" />
+                            </svg>
+                        </div>
+                        <h2 id="detected-item-name">Smartphone</h2>
+                        <div class="item-details">
+                            <div class="detail-card">
+                                <span class="detail-label">Estimated Value</span>
+                                <span class="detail-value">₹450</span>
+                            </div>
+                            <div class="detail-card">
+                                <span class="detail-label">Confidence</span>
+                                <span class="detail-value">94%</span>
+                            </div>
+                        </div>
+                        <p class="confidence-explanation">
+                            High confidence based on shape, size, and material detection.
+                            Our AI identified the screen, ports, and battery components.
+                        </p>
+                    </div>
+
+                    <button class="btn-primary" onclick="showNatureReaction()">
+                        Continue
+                        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Step 2 & 3: Sad to Happy Nature Animation -->
+                <div class="result-step" id="nature-reaction">
+                    <div class="nature-container">
+                        <div class="nature-character" id="nature-character">
+                            <!-- Sad Plant -->
+                            <svg viewBox="0 0 200 250" id="sad-plant" class="active">
+                                <!-- Pot -->
+                                <path d="M 70 200 L 60 240 L 140 240 L 130 200 Z" fill="#D4A574" />
+                                <ellipse cx="100" cy="200" rx="30" ry="8" fill="#C49563" />
+
+                                <!-- Wilted leaves -->
+                                <path d="M 100 200 Q 80 190, 70 210" stroke="#8B9F7E" stroke-width="4" fill="none"
+                                    stroke-linecap="round" />
+                                <path d="M 100 200 Q 120 190, 130 210" stroke="#8B9F7E" stroke-width="4" fill="none"
+                                    stroke-linecap="round" />
+                                <ellipse cx="70" cy="210" rx="12" ry="20" fill="#A8B89D" opacity="0.7" />
+                                <ellipse cx="130" cy="210" rx="12" ry="20" fill="#A8B89D" opacity="0.7" />
+
+                                <!-- Sad face on pot -->
+                                <circle cx="85" cy="220" r="3" fill="#8B7355" />
+                                <circle cx="115" cy="220" r="3" fill="#8B7355" />
+                                <path d="M 85 230 Q 100 225, 115 230" stroke="#8B7355" stroke-width="2" fill="none" />
+
+                                <!-- Tear -->
+                                <ellipse cx="82" cy="226" rx="2" ry="4" fill="#88C0D0" class="tear-drop" />
+                            </svg>
+
+                            <!-- Happy Plant (hidden initially) -->
+                            <svg viewBox="0 0 200 250" id="happy-plant">
+                                <!-- Pot -->
+                                <path d="M 70 200 L 60 240 L 140 240 L 130 200 Z" fill="#D4A574" />
+                                <ellipse cx="100" cy="200" rx="30" ry="8" fill="#C49563" />
+
+                                <!-- Stem -->
+                                <rect x="96" y="140" width="8" height="60" rx="4" fill="#7BC9A5" />
+
+                                <!-- Happy leaves -->
+                                <ellipse cx="70" cy="160" rx="25" ry="15" fill="#A8E6CF" transform="rotate(-30 70 160)"
+                                    class="leaf-grow" />
+                                <ellipse cx="130" cy="160" rx="25" ry="15" fill="#A8E6CF" transform="rotate(30 130 160)"
+                                    class="leaf-grow" />
+                                <ellipse cx="65" cy="180" rx="22" ry="13" fill="#B8E6D0" transform="rotate(-40 65 180)"
+                                    class="leaf-grow" />
+                                <ellipse cx="135" cy="180" rx="22" ry="13" fill="#B8E6D0" transform="rotate(40 135 180)"
+                                    class="leaf-grow" />
+
+                                <!-- Flower -->
+                                <circle cx="100" cy="130" r="8" fill="#FFE0B5" class="flower-bloom" />
+                                <circle cx="94" cy="125" r="6" fill="#FFD5D5" class="flower-bloom" />
+                                <circle cx="106" cy="125" r="6" fill="#FFD5D5" class="flower-bloom" />
+                                <circle cx="94" cy="135" r="6" fill="#FFD5D5" class="flower-bloom" />
+                                <circle cx="106" cy="135" r="6" fill="#FFD5D5" class="flower-bloom" />
+                                <circle cx="100" cy="130" r="5" fill="#FFB84D" class="flower-bloom" />
+
+                                <!-- Happy face on pot -->
+                                <circle cx="85" cy="220" r="3" fill="#8B7355" />
+                                <circle cx="115" cy="220" r="3" fill="#8B7355" />
+                                <path d="M 85 228 Q 100 235, 115 228" stroke="#8B7355" stroke-width="2" fill="none" />
+
+                                <!-- Sparkles -->
+                                <g class="sparkle" opacity="0">
+                                    <path d="M 50 140 L 52 145 L 50 150 L 48 145 Z" fill="#FFD700" />
+                                    <path d="M 45 145 L 50 145 L 45 147 L 45 145 Z" fill="#FFD700" />
+                                </g>
+                                <g class="sparkle" opacity="0">
+                                    <path d="M 150 140 L 152 145 L 150 150 L 148 145 Z" fill="#FFD700" />
+                                    <path d="M 155 145 L 150 145 L 155 147 L 155 145 Z" fill="#FFD700" />
+                                </g>
+                            </svg>
+                        </div>
+
+                        <div class="nature-message" id="sad-message">
+                            <div class="speech-bubble sad">
+                                <p>"I feel weak because of electronic waste…"</p>
+                            </div>
+                        </div>
+
+                        <div class="nature-message" id="happy-message" style="display: none;">
+                            <div class="speech-bubble happy">
+                                <p>"Thank you! You helped me grow today 🌱"</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn-primary" onclick="showImpact()" style="display: none;" id="impact-btn">
+                        See Your Impact
+                        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Step 4: Impact Message -->
+                <div class="result-step" id="impact-result">
+                    <div class="celebration-header">
+                        <h1 class="celebration-title">Amazing! 🎉</h1>
+                        <p class="celebration-subtitle">You made a real difference</p>
+                    </div>
+
+                    <div class="impact-cards">
+                        <div class="impact-card pop-in" style="animation-delay: 0.1s">
+                            <div class="impact-icon">
+                                <svg viewBox="0 0 60 60">
+                                    <circle cx="30" cy="30" r="28" fill="#FFE0B5" />
+                                    <text x="30" y="40" text-anchor="middle" font-size="28">⭐</text>
+                                </svg>
+                            </div>
+                            <div class="impact-value">+120</div>
+                            <div class="impact-label">Eco Points</div>
+                        </div>
+
+                        <div class="impact-card pop-in" style="animation-delay: 0.2s">
+                            <div class="impact-icon">
+                                <svg viewBox="0 0 60 60">
+                                    <circle cx="30" cy="30" r="28" fill="#B8E6D0" />
+                                    <text x="30" y="40" text-anchor="middle" font-size="28">☁️</text>
+                                </svg>
+                            </div>
+                            <div class="impact-value">1.8 kg</div>
+                            <div class="impact-label">CO₂ Saved</div>
+                        </div>
+
+                        <div class="impact-card pop-in" style="animation-delay: 0.3s">
+                            <div class="impact-icon">
+                                <svg viewBox="0 0 60 60">
+                                    <circle cx="30" cy="30" r="28" fill="#E8D5F2" />
+                                    <text x="30" y="40" text-anchor="middle" font-size="28">⚡</text>
+                                </svg>
+                            </div>
+                            <div class="impact-value">5 days</div>
+                            <div class="impact-label">Phone Charging</div>
+                        </div>
+                    </div>
+
+                    <div class="final-message">
+                        <p>You saved enough energy to charge a phone for 5 days! 🔋</p>
+                    </div>
+
+                    <div class="result-actions">
+                        <button class="btn-primary" onclick="navigateTo('home')">
+                            <svg class="btn-icon-left" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                                <polyline points="9 22 9 12 15 12 15 22" />
+                            </svg>
+                            Back to Dashboard
+                        </button>
+                        <button class="btn-secondary" onclick="navigateTo('landing')"
+                            style="border-color: #ff4d4d; color: #ff4d4d;">
+                            <svg class="btn-icon-left" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                                <polyline points="16 17 21 12 16 7" />
+                                <line x1="21" y1="12" x2="9" y2="12" />
+                            </svg>
+                            Exit to Login
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 6: History & Profile Screen -->
+    <div class="screen" id="history-screen">
+        <div class="container">
+            <div class="header screen-header">
+                <button class="btn-back btn-back-header" onclick="goBack()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M19 12H5M12 19l-7-7 7-7" />
+                    </svg>
+                </button>
+                <h2>Your Eco Journey</h2>
+            </div>
+
+            <!-- User Profile Card -->
+            <div class="profile-card">
+                <div class="profile-avatar">
+                    <svg viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="45" fill="#A8E6CF" />
+                        <path d="M 35 40 Q 40 30, 45 40" stroke="#5FB87C" stroke-width="3" fill="none" />
+                        <path d="M 55 40 Q 60 30, 65 40" stroke="#5FB87C" stroke-width="3" fill="none" />
+                        <path d="M 30 60 Q 50 75, 70 60" stroke="#5FB87C" stroke-width="4" fill="none"
+                            stroke-linecap="round" />
+                    </svg>
+                </div>
+                <div class="profile-info">
+                    <h3 id="user-level">Eco Warrior</h3>
+                    <div class="level-bar">
+                        <div class="level-progress" id="level-progress" style="width: 65%"></div>
+                    </div>
+                    <p class="level-text">Level 3 • <span id="points-to-next">105 points to Level 4</span></p>
+                </div>
+            </div>
+
+            <!-- Streak & Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card streak">
+                    <div class="stat-icon">🔥</div>
+                    <div class="stat-value" id="streak-count">7</div>
+                    <div class="stat-label">Day Streak</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">♻️</div>
+                    <div class="stat-value" id="total-items">23</div>
+                    <div class="stat-label">Items Recycled</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⭐</div>
+                    <div class="stat-value" id="total-points">765</div>
+                    <div class="stat-label">Eco Points</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🌍</div>
+                    <div class="stat-value" id="total-co2">12.5</div>
+                    <div class="stat-label">kg CO₂ Saved</div>
+                </div>
+            </div>
+
+            <!-- Achievements/Badges Section -->
+            <div class="section">
+                <h3 class="section-title">🏆 Achievements</h3>
+                <div class="badges-grid">
+                    <div class="badge-item unlocked">
+                        <div class="badge-icon">🌱</div>
+                        <div class="badge-name">First Steps</div>
+                    </div>
+                    <div class="badge-item unlocked">
+                        <div class="badge-icon">📱</div>
+                        <div class="badge-name">Phone Pro</div>
+                    </div>
+                    <div class="badge-item unlocked">
+                        <div class="badge-icon">🔋</div>
+                        <div class="badge-name">Battery Boss</div>
+                    </div>
+                    <div class="badge-item unlocked">
+                        <div class="badge-icon">🔥</div>
+                        <div class="badge-name">Week Warrior</div>
+                    </div>
+                    <div class="badge-item locked">
+                        <div class="badge-icon">💎</div>
+                        <div class="badge-name">Month Master</div>
+                    </div>
+                    <div class="badge-item locked">
+                        <div class="badge-icon">👑</div>
+                        <div class="badge-name">Eco Legend</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recycling History Timeline -->
+            <div class="section">
+                <h3 class="section-title">📜 Recent Activity</h3>
+                <div class="timeline" id="history-timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-dot phone"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-header">
+                                <span class="timeline-item-name">Smartphone</span>
+                                <span class="timeline-points">+120 pts</span>
+                            </div>
+                            <div class="timeline-details">
+                                <span class="timeline-station">EcoBin Station #42</span>
+                                <span class="timeline-time">2 hours ago</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot battery"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-header">
+                                <span class="timeline-item-name">Lithium Battery</span>
+                                <span class="timeline-points">+90 pts</span>
+                            </div>
+                            <div class="timeline-details">
+                                <span class="timeline-station">EcoBin Station #42</span>
+                                <span class="timeline-time">Yesterday</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot charger"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-header">
+                                <span class="timeline-item-name">USB Charger</span>
+                                <span class="timeline-points">+60 pts</span>
+                            </div>
+                            <div class="timeline-details">
+                                <span class="timeline-station">EcoBin Station #27</span>
+                                <span class="timeline-time">2 days ago</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot laptop"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-header">
+                                <span class="timeline-item-name">Laptop Computer</span>
+                                <span class="timeline-points">+200 pts</span>
+                            </div>
+                            <div class="timeline-details">
+                                <span class="timeline-station">EcoBin Station #15</span>
+                                <span class="timeline-time">3 days ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Environmental Impact Summary -->
+            <div class="impact-summary-card">
+                <h3>🌿 Your Total Impact</h3>
+                <div class="impact-comparison">
+                    <div class="impact-item">
+                        <span class="impact-emoji">🌳</span>
+                        <span class="impact-text">Equal to planting <strong>3 trees</strong></span>
+                    </div>
+                    <div class="impact-item">
+                        <span class="impact-emoji">💡</span>
+                        <span class="impact-text">Powered a home for <strong>2 days</strong></span>
+                    </div>
+                    <div class="impact-item">
+                        <span class="impact-emoji">🚗</span>
+                        <span class="impact-text">Saved <strong>50 km</strong> of car emissions</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="history-actions" style="display: flex; flex-direction: column; gap: 10px;">
+                <button class="btn-primary" onclick="navigateTo('home')">
+                    <svg class="btn-icon-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                        <polyline points="9 22 9 12 15 12 15 22" />
+                    </svg>
+                    Back to Dashboard
+                </button>
+                <button class="btn-secondary" onclick="navigateTo('landing')"
+                    style="border-color: #ff4d4d; color: #ff4d4d;">
+                    <svg class="btn-icon-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                        <polyline points="16 17 21 12 16 7" />
+                        <line x1="21" y1="12" x2="9" y2="12" />
+                    </svg>
+                    <span>Logout to Login Screen</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Helper Tools Panel (Top Right Corner) -->
+    <div class="helper-tools-panel">
+        <!-- Google Translate Widget -->
+        <div class="translate-widget" id="google_translate_element"></div>
+
+        <!-- Want Help Button -->
+        <button class="help-trigger-btn" onclick="toggleChat()">
+            <span class="help-text">Want Help?</span>
+            <span class="help-robot">🤖</span>
+        </button>
+    </div>
+
+    <!-- AI Chatbot Widget -->
+    <div class="chatbot-container" id="chatbot-container" onclick="if(event.target === this) toggleChat()">
+        <!-- Chat Window -->
+        <div class="chat-window" id="chat-window">
+            <div class="chat-header">
+                <div class="chat-avatar">🌱</div>
+                <div>
+                    <h3>EcoBot</h3>
+                    <p>Your recycling assistant</p>
+                </div>
+                <button class="chat-close" onclick="toggleChat()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="chat-messages" id="chat-messages">
+                <div class="bot-message">
+                    <div class="message-avatar">🌱</div>
+                    <div class="message-bubble">
+                        <p>Hi there! I'm EcoBot 👋</p>
+                        <p>I can help you with recycling questions, find nearby centers, or answer any queries about
+                            e-waste!</p>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <button class="quick-btn" onclick="sendQuickMessage('Can I recycle batteries?')">
+                        🔋 Recycle batteries?
+                    </button>
+                    <button class="quick-btn" onclick="sendQuickMessage('Where is the nearest center?')">
+                        📍 Nearest center?
+                    </button>
+                    <button class="quick-btn" onclick="sendQuickMessage('How do I earn points?')">
+                        ⭐ Earn points?
+                    </button>
+                    <button class="quick-btn" onclick="sendQuickMessage('Contact support')">
+                        📞 Contact support
+                    </button>
+                </div>
+            </div>
+
+            <div class="chat-input-wrapper">
+                <input type="text" class="chat-input" id="chat-input" placeholder="Ask me anything about recycling..."
+                    onkeypress="if(event.key==='Enter') sendMessage()" />
+                <button class="chat-send" onclick="sendMessage()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
