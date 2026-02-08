@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recycling Center Dashboard - EcoBin</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .center-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 20px;
+        }
+
+        .center-header {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 20px 30px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .center-header h1 {
+            color: #7bed9f;
+            font-size: 28px;
+            font-weight: 600;
+            margin: 0;
+            flex: 1;
+            text-align: center;
+        }
+
+        .center-header .user-info {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .btn-back-center {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .btn-back-center:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateX(-3px);
+        }
+
+        .btn-back-center svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(123, 237, 159, 0.2);
+        }
+
+        .stat-card .icon {
+            font-size: 36px;
+            margin-bottom: 12px;
+        }
+
+        .stat-card .label {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .stat-card .value {
+            color: #7bed9f;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 20px;
+        }
+
+        .card h2 {
+            color: #fff;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .schedule-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-left: 3px solid #7bed9f;
+        }
+
+        .schedule-item .time {
+            color: #7bed9f;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .schedule-item .location {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 3px;
+        }
+
+        .schedule-item .status {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+        }
+
+        .inventory-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            margin-bottom: 10px;
+        }
+
+        .inventory-item .name {
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+        }
+
+        .inventory-item .quantity {
+            color: #7bed9f;
+            font-weight: 600;
+        }
+
+        .full-width-card {
+            grid-column: 1 / -1;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            color: rgba(255, 255, 255, 0.8);
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 13px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        td {
+            color: rgba(255, 255, 255, 0.7);
+            padding: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 13px;
+        }
+
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .status-completed {
+            background: rgba(123, 237, 159, 0.2);
+            color: #7bed9f;
+        }
+
+        .status-pending {
+            background: rgba(255, 217, 61, 0.2);
+            color: #ffd93d;
+        }
+
+        @media (max-width: 968px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="center-container">
+        <!-- Header -->
+        <div class="center-header">
+            <a href="index.html" class="btn-back-center">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7" />
+                </svg>
+                <span>Back to App</span>
+            </a>
+            <h1>🏢 Recycling Center Dashboard</h1>
+            <div class="user-info">
+                📍 Green Valley Center
+            </div>
+        </div>
+
+        <!-- Statistics -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="icon">📦</div>
+                <div class="label">Today's Collections</div>
+                <div class="value">24</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="icon">⚖️</div>
+                <div class="label">Total Weight (kg)</div>
+                <div class="value">186</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="icon">💰</div>
+                <div class="label">Revenue Today</div>
+                <div class="value">₹2,840</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="icon">🚚</div>
+                <div class="label">Pending Pickups</div>
+                <div class="value">7</div>
+            </div>
+        </div>
+
+        <!-- Content Grid -->
+        <div class="content-grid">
+            <!-- Collection Schedule -->
+            <div class="card">
+                <h2>🗓️ Today's Collection Schedule</h2>
+                <div class="schedule-item">
+                    <div class="time">9:00 AM - 10:00 AM</div>
+                    <div class="location">📍 BIN-042 (Green Valley Mall)</div>
+                    <div class="status">✅ Completed - 45 kg collected</div>
+                </div>
+
+                <div class="schedule-item">
+                    <div class="time">11:30 AM - 12:00 PM</div>
+                    <div class="location">📍 BIN-015 (Lanka Market)</div>
+                    <div class="status">✅ Completed - 38 kg collected</div>
+                </div>
+
+                <div class="schedule-item">
+                    <div class="time">2:00 PM - 2:30 PM</div>
+                    <div class="location">📍 BIN-028 (Bhelpur)</div>
+                    <div class="status">⏳ Scheduled</div>
+                </div>
+
+                <div class="schedule-item">
+                    <div class="time">4:30 PM - 5:00 PM</div>
+                    <div class="location">📍 BIN-007 (Sigra)</div>
+                    <div class="status">⏳ Scheduled</div>
+                </div>
+            </div>
+
+            <!-- Current Inventory -->
+            <div class="card">
+                <h2>📊 Current Inventory</h2>
+                <div class="inventory-item">
+                    <div class="name">📱 Mobile Phones</div>
+                    <div class="quantity">127 units</div>
+                </div>
+
+                <div class="inventory-item">
+                    <div class="name">💻 Laptops</div>
+                    <div class="quantity">43 units</div>
+                </div>
+
+                <div class="inventory-item">
+                    <div class="name">🔋 Batteries</div>
+                    <div class="quantity">284 units</div>
+                </div>
+
+                <div class="inventory-item">
+                    <div class="name">🔌 Chargers & Cables</div>
+                    <div class="quantity">156 units</div>
+                </div>
+
+                <div class="inventory-item">
+                    <div class="name">⌨️ Peripherals</div>
+                    <div class="quantity">92 units</div>
+                </div>
+
+                <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <div class="inventory-item" style="background: rgba(123, 237, 159, 0.1); margin: 0;">
+                        <div class="name" style="font-weight: 600;">📦 Total Items</div>
+                        <div class="quantity" style="font-size: 18px;">702 units</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Collections Table -->
+        <div class="card full-width-card">
+            <h2>📋 Recent Collections</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Bin ID</th>
+                        <th>Location</th>
+                        <th>Weight (kg)</th>
+                        <th>Value (₹)</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>9:15 AM</td>
+                        <td>BIN-042</td>
+                        <td>Green Valley Mall</td>
+                        <td>45.2 kg</td>
+                        <td>₹1,620</td>
+                        <td><span class="status-badge status-completed">Completed</span></td>
+                    </tr>
+                    <tr>
+                        <td>11:45 AM</td>
+                        <td>BIN-015</td>
+                        <td>Lanka Market</td>
+                        <td>38.6 kg</td>
+                        <td>₹1,220</td>
+                        <td><span class="status-badge status-completed">Completed</span></td>
+                    </tr>
+                    <tr>
+                        <td>2:00 PM</td>
+                        <td>BIN-028</td>
+                        <td>Bhelpur</td>
+                        <td>52.0 kg</td>
+                        <td>₹1,840</td>
+                        <td><span class="status-badge status-pending">Scheduled</span></td>
+                    </tr>
+                    <tr>
+                        <td>4:30 PM</td>
+                        <td>BIN-007</td>
+                        <td>Sigra</td>
+                        <td>28.0 kg</td>
+                        <td>₹980</td>
+                        <td><span class="status-badge status-pending">Scheduled</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>
