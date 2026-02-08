@@ -3,6 +3,10 @@
 [![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen)](https://resilient-sundae-5cefb6.netlify.app/)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
+## 🌐 Live Hosted Application
+
+**Hosted URL:** https://resilient-sundae-5cefb6.netlify.app/
+
 > **Transform e-waste into eco-rewards** – A gamified platform that makes electronic waste recycling easy, rewarding, and fun!
 
 ---
