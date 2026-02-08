@@ -1,11 +1,11 @@
 # 🌱 EcoBin – Smart E-Waste Recycling Platform
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen)](https://resilient-sundae-5cefb6.netlify.app/)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen)](https://ecobin-recycling.netlify.app/)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 ## 🌐 Live Hosted Application
 
-**Hosted URL:** https://resilient-sundae-5cefb6.netlify.app/
+**Hosted URL:** https://ecobin-recycling.netlify.app/
 
 > **Transform e-waste into eco-rewards** – A gamified platform that makes electronic waste recycling easy, rewarding, and fun!
 
@@ -105,7 +105,7 @@
 
 ## 🚀 Live Demo
 
-### **👉 [Try EcoBin Now!](https://resilient-sundae-5cefb6.netlify.app/)**
+### **👉 [Try EcoBin Now!](https://ecobin-recycling.netlify.app/)**
 
 **Test the complete flow:**
 1. Click "Start Recycling"
