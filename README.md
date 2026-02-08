@@ -280,7 +280,7 @@ This project is licensed under the **MIT License** – see [LICENSE](LICENSE) fi
 **Khushi Singh**
 
 - GitHub: [@biharkhushisingh-lab](https://github.com/biharkhushisingh-lab)
-- LinkedIn: [Your LinkedIn](https://linkedin.com/in/YOUR_LINKEDIN)
+- LinkedIn: [My LinkedIn](https://www.linkedin.com/in/khushi-singh-9a441b377)
 
 ---
 
@@ -290,16 +290,6 @@ This project is licensed under the **MIT License** – see [LICENSE](LICENSE) fi
 - **Leaflet.js** for mapping library
 - **Google Translate** for language support
 - **IIT BHU** for the hackathon opportunity
-
----
-
-## 📞 Support
-
-Have questions? Need help?
-
-- 💬 Open an [Issue](https://github.com/YOUR_USERNAME/ecobin/issues)
-- 📧 Email: your.email@example.com
-- 🤖 Try our in-app chatbot!
 
 ---
 
