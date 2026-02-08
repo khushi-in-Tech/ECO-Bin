@@ -1,6 +1,6 @@
 # 🌱 EcoBin – Smart E-Waste Recycling Platform
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen)](https://khushi-in-Tech.github.io/ECO-Bin/)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen)](https://biharkhushisingh-lab.github.io/ECO-Bin/)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 > **Transform e-waste into eco-rewards** – A gamified platform that makes electronic waste recycling easy, rewarding, and fun!
@@ -89,7 +89,7 @@
 
 ## 🚀 Live Demo
 
-### **👉 [Try EcoBin Now!](https://khushi-in-Tech.github.io/ECO-Bin/)**
+### **👉 [Try EcoBin Now!](https://biharkhushisingh-lab.github.io/ECO-Bin/)**
 
 **Test the complete flow:**
 1. Click "Start Recycling"
@@ -117,7 +117,7 @@
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/khushi-in-Tech/ECO-Bin.git
+git clone https://github.com/biharkhushisingh-lab/ECO-Bin.git
 cd ECO-Bin
 ```
 
@@ -259,7 +259,7 @@ This project is licensed under the **MIT License** – see [LICENSE](LICENSE) fi
 
 **Khushi Singh**
 
-- GitHub: [@khushi-in-Tech](https://github.com/khushi-in-Tech)
+- GitHub: [@biharkhushisingh-lab](https://github.com/biharkhushisingh-lab)
 - LinkedIn: [Your LinkedIn](https://linkedin.com/in/YOUR_LINKEDIN)
 
 ---
@@ -289,6 +289,6 @@ Have questions? Need help?
 
 **Made with 💚 for a sustainable future**
 
-[⭐ Star this repo](https://github.com/khushi-in-Tech/ECO-Bin) | [🐛 Report Bug](https://github.com/khushi-in-Tech/ECO-Bin/issues) | [✨ Request Feature](https://github.com/khushi-in-Tech/ECO-Bin/issues)
+[⭐ Star this repo](https://github.com/biharkhushisingh-lab/ECO-Bin) | [🐛 Report Bug](https://github.com/biharkhushisingh-lab/ECO-Bin/issues) | [✨ Request Feature](https://github.com/biharkhushisingh-lab/ECO-Bin/issues)
 
 </div>
